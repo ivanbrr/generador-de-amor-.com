@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Amor</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffe4ec 0%, #fffbe4 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 7vw 4vw 5vw 4vw;
+            border-radius: 30px;
+            box-shadow: 0 8px 32px #ffb6c1cc;
+            max-width: 95vw;
+            margin: 5vw auto;
+            position: relative;
+        }
+        .corazon {
+            font-size: 3em;
+            animation: latir 1s infinite alternate;
+            margin-bottom: 2vw;
+        }
+        @keyframes latir {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        input, button {
+            font-size: 1.2em;
+            padding: 4vw 2vw;
+            border-radius: 10px;
+            border: 1px solid #ffb6c1;
+            margin: 3vw 0;
+            width: 80vw;
+            max-width: 350px;
+            box-sizing: border-box;
+        }
+        button {
+            background: linear-gradient(90deg, #ffb6c1 60%, #ff69b4 100%);
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 2px 8px #ffb6c1aa;
+            transition: background 0.2s, transform 0.1s;
+        }
+        button:active, button:hover {
+            background: linear-gradient(90deg, #ff69b4 60%, #ffb6c1 100%);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        #resultado {
+            font-size: 1.5em;
+            margin-top: 5vw;
+            color: #b22222;
+            word-break: break-word;
+            background: #fffbe4;
+            border-radius: 15px;
+            padding: 2vw 3vw;
+            box-shadow: 0 2px 8px #ffb6c155;
+        }
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 4vw;
+            color: #d72660;
+            text-shadow: 1px 2px 8px #fffbe4;
+        }
+        #inicio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+        #animacion {
+            display: none;
+            min-height: 60vh;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="inicio">
+        <div class="corazon">💖</div>
+        <h1>Generador de Porcentaje de Amor</h1>
+        <button onclick="animarCorazon()">¡Empezar!</button>
+    </div>
+    <div id="animacion" style="display:none; min-height:60vh; align-items:center; justify-content:center; flex-direction:column;">
+        <div class="corazon" id="corazonAnimado" style="font-size:6em; margin-top:10vh;">💖</div>
+    </div>
+    <div class="container" id="juego" style="display:none;">
+        <div class="corazon">💖</div>
+        <h1>Generador de Porcentaje de Amor</h1>
+        <form onsubmit="calcularAmor(event)">
+            <input type="text" id="nombre1" placeholder="Tu nombre" required><br>
+            <input type="text" id="nombre2" placeholder="Nombre de tu amor o crush" required><br>
+            <button type="submit">Calcular amor</button>
+        </form>
+        <div id="resultado"></div>
+        <button onclick="volverInicio()" style="margin-top:3vw; background:#fffbe4; color:#d72660; border:1px solid #ffb6c1;">Volver al inicio</button>
+    </div>
+    <script>
+        function animarCorazon() {
+            document.getElementById('inicio').style.display = 'none';
+            document.getElementById('animacion').style.display = 'flex';
+            var corazon = document.getElementById('corazonAnimado');
+            corazon.style.animation = 'latir 0.5s 6 alternate';
+            setTimeout(function() {
+                document.getElementById('animacion').style.display = 'none';
+                document.getElementById('juego').style.display = 'flex';
+            }, 3000);
+        }
+        function mostrarJuego() {
+            document.getElementById('juego').style.display = 'flex';
+        }
+        function volverInicio() {
+            document.getElementById('juego').style.display = 'none';
+            document.getElementById('inicio').style.display = 'flex';
+            document.getElementById('resultado').innerHTML = '';
+            document.getElementById('nombre1').value = '';
+            document.getElementById('nombre2').value = '';
+        }
+        function calcularAmor(event) {
+            event.preventDefault();
+            const nombre1 = document.getElementById('nombre1').value.trim();
+            const nombre2 = document.getElementById('nombre2').value.trim();
+            if (!nombre1 || !nombre2) return;
+            let total = 0;
+            const combinado = (nombre1 + nombre2).toLowerCase();
+            for (let i = 0; i < combinado.length; i++) {
+                total += combinado.charCodeAt(i);
+            }
+            const porcentaje = 10 + (total % 91);
+            let mensaje = '';
+            if (porcentaje > 90) mensaje = '¡Almas gemelas! 💍';
+            else if (porcentaje > 70) mensaje = '¡Hay mucha química! 💘';
+            else if (porcentaje > 50) mensaje = '¡Puede funcionar! 😊';
+            else if (porcentaje > 30) mensaje = 'Hay esperanza... 😉';
+            else mensaje = 'Mejor como amigos 😅';
+            document.getElementById('resultado').innerHTML =
+                `<b>${nombre1}</b> y <b>${nombre2}</b> tienen un <b>${porcentaje}%</b> de amor.<br>${mensaje}`;
+        }
+    </script>
+</body>
+</html>
